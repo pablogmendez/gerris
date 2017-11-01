@@ -1,0 +1,57 @@
+# Gerris Flow Solver 2D version 1.3.2 (131206-12345)
+2 1 GfsSimulation GfsBox GfsGEdge {} {
+  Define DT 0.025
+  Time { i = 0 end = 60 dtmax = DT }
+
+  Define BOX_SIZE 10
+  GfsGlobal {
+    GfsInclude constants.c
+    GfsInclude functions.c
+  }
+
+  RefineSolid REFINE_SOLID_MAX
+  PhysicalParams { L = BOX_SIZE }
+  Solid ( x*x + y*y - R*R ) {}
+  GModule controller
+  ControllerSolidForce { step = DT } 
+  SurfaceBc U Dirichlet  {
+      return actuation_u(x, y);
+  }
+  SurfaceBc V Dirichlet {
+      return actuation_v(x, y);
+  }
+  VariableTracer {} T
+  SourceDiffusion {} T 0.025
+  EventBalance { istep = 10 } 0.1
+  SourceViscosity { } 1./Re {}
+  #AdaptVorticity { istep = 5 } { 
+  #  cmax=0.1 
+  #  minlevel = (x < 0 ? positive_quad_symmetric_refinement(x, y) : REFINE_MIN)
+  #  maxlevel = (x < 0 ? positive_quad_symmetric_refinement(x, y) : REFINE_MAX)
+  #}
+  AdaptFunction { istep = 5 } { 
+    cmax=0.1 
+    minlevel = (x < 0 ? positive_quad_symmetric_refinement(x, y) : REFINE_MIN)
+    maxlevel = (x < 0 ? positive_quad_symmetric_refinement(x, y) : REFINE_MAX)
+  } T
+  OutputTime { step = 1 } stdout
+  OutputSolidForce { step = DT } results/forces.txt
+  OutputSimulation { step = 10 } results/cylinder_%07.3f.gfs { variables = U,V,P,T binary = 0} 
+  OutputLocation { step=DT } results/sensors.txt sensorsXYZ
+  ControllerLocation { step = DT } { 
+      samples-window = 99 
+      python-main = "./python/main.py" 
+      python-userscript = "./python/user/controller.py" 
+  } sensorsXYZ
+  OutputPPM {start=0 step = 0.25 } { ppm2mpeg -s 1024x512 > vorticity.mpg }  {min = -10 max = 10 v = Vorticity}
+  OutputPPM {start=0 step = 0.25 } { ppm2mpeg -s 1024x512 > tracer.mpg }  {min = 0 max = 1 v = T}
+}
+GfsBox { left = GfsBoundary {
+    GfsBcDirichlet U Ut
+    GfsBcDirichlet V 0
+    GfsBcDirichlet T { return (fabs(y) < T_SIZE/2.0) ? T_CONCENTRATION : 0.; }
+  }
+}
+GfsBox { right = GfsBoundaryOutflow }
+1 2 right
+

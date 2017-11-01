@@ -1,0 +1,11 @@
+static const double Re = 235;
+static const double R = 0.5;
+static const double Ut = 1;
+static const double ACT_THETA_CENTER = 0.375*M_PI;  /* 3/8* pi */
+static const double ACT_THETA_WIDTH = 0.125*M_PI; /*  pi/8 */
+static const double ACT_SIGMA_COEF = 0.75;
+static const double REFINE_MIN = 4;
+static const double REFINE_MAX = 7;
+static const double REFINE_SOLID_MAX = 8;
+static const double T_SIZE = 0.2;
+static const double T_CONCENTRATION = 1;
