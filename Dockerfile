@@ -7,10 +7,7 @@ ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig
 # Add common directory
 ADD Gerris /tmp/gerris
 
-RUN echo "proxy=http://10.1.1.88:3128" >> /etc/yum.conf && \
-	echo "proxy_username=pgmendez" >> /etc/yum.conf && \
-	echo "proxy_password=Octubre2017" >> /etc/yum.conf && \
-	yum update -y
+RUN yum update -y
 
 ########## Install dependencies ##########
 
@@ -37,7 +34,7 @@ RUN tar -xvzf /gerris/packages/ffmpeg-3.4.tar.gz && cd ffmpeg-3.4 && ./configure
 RUN cd /gerris/gerris/gts-stable && sh autogen.sh && automake --add-missing && ./configure && make && make install
 
 # install gerris
-RUN cd /gerris/gerris/gerris-stable && sh autogen.sh && automake --add-missing && make && make install
+RUN cd /gerris/gerris/gerris-stable && sh autogen.sh && automake --add-missing && touch test-driver && make && make install
 
 # install Pablo gerris
-RUN cd /gerris/Gerris-ControllerModule/gerris-stable && sh autogen.sh && automake --add-missing && make && make install
+RUN cd /gerris/Gerris-ControllerModule/gerris-stable && touch test-driver && sh autogen.sh && make && make install
