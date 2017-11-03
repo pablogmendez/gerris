@@ -37,4 +37,4 @@ RUN cd /gerris/gerris/gts-stable && sh autogen.sh && automake --add-missing && .
 RUN cd /gerris/gerris/gerris-stable && sh autogen.sh && automake --add-missing && touch test-driver && make && make install
 
 # install Pablo gerris
-RUN cd /gerris/gerris/Gerris-ControllerModule/gerris-stable && touch test-driver && sh autogen.sh && make && make install
+RUN cd /gerris/Gerris-ControllerModule/gerris-stable && touch test-driver && sh autogen.sh && make && make install

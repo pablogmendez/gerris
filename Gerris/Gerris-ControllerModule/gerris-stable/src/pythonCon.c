@@ -315,6 +315,12 @@ void py_connector_send_force(py_connector_t* self, FttVector pf, FttVector vf, F
     double time;
     py_connector_get_step_time(self, &step, &time);
 
+    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "CREATING PACKET FORCE: %zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu,%zu",
+	                    sizeof(char), sizeof(double), sizeof(int32_t),
+                            sizeof(double), sizeof(double), sizeof(double),
+                            sizeof(double), sizeof(double), sizeof(double),
+                            sizeof(double), sizeof(double), sizeof(double),
+                            sizeof(double), sizeof(double), sizeof(double));
     packet_t pkg;
     packet_create(&pkg, sizeof(char), sizeof(double), sizeof(int32_t),
                             sizeof(double), sizeof(double), sizeof(double),
@@ -368,6 +374,8 @@ void py_connector_send_locations_metadata(py_connector_t* self, GfsVariable* var
     py_connector_get_step_time(self, &step, &time);
 
     g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, "step=%d - t=%.3f - Sending locations metadata. VariablesQty=%zu - LocationsQty=%zu", step, time, variablesQty, locationsQty);
+    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "CREATING PACKET META 1: %zu,%zu,%zu,%zu,%zu",sizeof(char), sizeof(double), sizeof(int32_t), sizeof(uint32_t), sizeof(char) * VAR_MAX_LENGTH);
+    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "CREATING PACKET META 2: %zu,%zu,%zu,%zu,%zu,%zu,%zu",sizeof(char), sizeof(double), sizeof(int32_t), sizeof(uint32_t), sizeof(double), sizeof(double), sizeof(double));
     for(size_t i = 0; i < variablesQty; ++i) {
         packet_t pkg;
         packet_create(&pkg, sizeof(char), sizeof(double), sizeof(int32_t), sizeof(uint32_t), sizeof(char) * VAR_MAX_LENGTH, 0);
