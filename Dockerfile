@@ -7,7 +7,7 @@ ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig
 # Add common directory
 ADD Gerris /tmp/gerris
 
-yum update -y
+RUN yum update -y
 
 ########## Install dependencies ##########
 
