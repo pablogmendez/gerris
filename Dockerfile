@@ -7,11 +7,6 @@ ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig
 # Add common directory
 ADD Gerris /tmp/gerris
 
-RUN echo "proxy=http://10.1.1.88:3128" >> /etc/yum.conf && \
-	echo "proxy_username=pgmendez" >> /etc/yum.conf && \
-	echo "proxy_password=Octubre2017" >> /etc/yum.conf && \
-	yum update -y
-
 ########## Install dependencies ##########
 
 # yum
@@ -40,4 +35,4 @@ RUN cd /gerris/gerris/gts-stable && sh autogen.sh && automake --add-missing && .
 RUN cd /gerris/gerris/gerris-stable && sh autogen.sh && automake --add-missing && make && make install
 
 # install Pablo gerris
-RUN cd /gerris/Gerris-ControllerModule/gerris-stable && sh autogen.sh && automake --add-missing && make && make install
+RUN cd /gerris/gerris/Gerris-ControllerModule/gerris-stable && sh autogen.sh && automake --add-missing && make && make install
